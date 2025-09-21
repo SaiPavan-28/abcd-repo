@@ -1,0 +1,168 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "02e3d971-5c08-4599-834c-3c221fc347e9",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "DB6ybGFPguSRUoFq",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.snippet }}summarize\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "6855ad51-d93b-48cd-ae8a-ac2baad229f5",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "chatId": "7880246063",
+        "text": "=hi ra{{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        560,
+        0
+      ],
+      "id": "bd0bcaee-e1b0-4155-b14d-aef000cd0e59",
+      "name": "Send a text message",
+      "webhookId": "70c264cb-eae2-47ff-a704-17d39647f72a",
+      "credentials": {
+        "telegramApi": {
+          "id": "Fvm6iBlaj6mFJUy1",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        80,
+        208
+      ],
+      "id": "ddbb07ea-645c-4c57-b28e-7e8056da29a5",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "gDgcorp4qvmtJtf5",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "alladisaipavan6@gmail.com",
+        "subject": "hi",
+        "message": "hi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        368,
+        208
+      ],
+      "id": "389170a1-62f0-4955-a220-d1f49c847b54",
+      "name": "Send a message in Gmail",
+      "webhookId": "12061d67-0291-4848-ac63-f328b49e8758",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "DB6ybGFPguSRUoFq",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "6691809d-f8e5-4506-9de5-8efd16e5001b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c2e1e1fa51938e2364bbae2f2a5995ab420f5c8a68c43ef0b9227fdaac3631ec"
+  },
+  "id": "GkrV8q7ygdz8tjn9",
+  "tags": []
+}
